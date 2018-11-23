@@ -39,7 +39,7 @@ if ($Post) {
 }
 #Try download content from GitHub
 try {
-	$r = (iwr https://raw.githubusercontent.com/karlbaroque/Xaver/master/post.txt).Content
+	$r = (iwr https://raw.githubusercontent.com/RaGNaroK0301/PowerShell/master/Contact.txt).Content
 	if ($r.Trim().Length -gt 0) {
 		$DecodedText = $r -split "`r`n" | % {[System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String($_))}
 		$oResult = [System.Windows.Forms.Messagebox]::Show($(($DecodedText -join "`r`n").Trim()))
