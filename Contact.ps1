@@ -3,15 +3,20 @@ param [switch]($Post)
 #Define Const
 $Message = "$PSScriptRoot\Message.txt"
 $Post = "$PSScriptRoot\Post.txt"
+$Reply = "$PSScriptRoot\Reply.txt"
 $GitErrorMessage = "Failed to Connect Git at"
 
 if (-not (Test-Path $Message)) {New-Item -type File $Message}
 if (-not (Test-Path $Post)) {New-Item -type File $Post}
+if (-not (Test-Path $Reply)) {New-Item -type File $Reply}
 if ((dir $Message).LastWriteTime.AddDays(7) -ge (Get-Date)) {
 	Set-Content -Path $Message -Value "" -Force
 }
 if ((dir $Post).LastWriteTime.AddDays(7) -ge (Get-Date)) {
 	Set-Content -Path $Post -Value "" -Force
+}
+if ((dir $Reply).LastWriteTime.AddDays(7) -ge (Get-Date)) {
+	Set-Content -Path $Reply -Value "" -Force
 }
 
 #Load Assembly
@@ -22,6 +27,7 @@ function Post {
 		$PostMessage = Get-Content $Post -Encoding UTF8
 		$Bytes = [System.Text.Encoding]::Unicode.GetBytes($PostMessage)
 		$EncodedText =[Convert]::ToBase64String($Bytes)
+		Set-Content -Value $EncodedText -Path $Reply -Force
 		$Date = Get-Date -UFormat '%Y/%m/%d-%H:%M:%S'
 		try {
 			git add D:\PowerShell\Xaver
